@@ -33,7 +33,11 @@ export default function PostDetail() {
     if (!window.confirm("Are you sure you want to delete this post?")) return;
 
     try {
-      await api.delete(`/posts/${id}`);
+      await api.delete(`/posts/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       navigate("/");
     } catch (error) {
       setError("Failed to delete post");

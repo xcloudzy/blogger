@@ -72,6 +72,13 @@ export const deletePost = async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
+    if (
+      post.author.toString() !== req.user._id.toString() &&
+      !req.user.isAdmin
+    ) {
+      return res.status(401).json({ message: "Not authorized" });
+    }
+
     await post.deleteOne();
     res.json({ message: "Post removed" });
   } catch (error) {

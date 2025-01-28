@@ -73,7 +73,7 @@ export default function AdminDashboard() {
                   Title
                 </th>
                 <th className="text-left p-4 font-medium text-gray-600">
-                  Author
+                  User
                 </th>
                 <th className="text-left p-4 font-medium text-gray-600">
                   Date
