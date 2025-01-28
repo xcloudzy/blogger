@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { PenSquare, LogOut } from 'lucide-react';
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { PenSquare, LogOut } from "lucide-react";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -21,7 +21,7 @@ export default function Navbar() {
                   className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
                 >
                   <PenSquare className="w-5 h-5" />
-                  Write
+                  Create
                 </Link>
                 {user.isAdmin && (
                   <Link
@@ -41,10 +41,7 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <Link
-                  to="/login"
-                  className="text-gray-600 hover:text-gray-900"
-                >
+                <Link to="/login" className="text-gray-600 hover:text-gray-900">
                   Login
                 </Link>
                 <Link

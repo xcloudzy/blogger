@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
-import { Trash2 } from "lucide-react";
+import { Trash2, ArrowUpRight } from "lucide-react";
 import api from "../lib/axios";
 import { Post, User } from "../types";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -22,29 +22,14 @@ export default function AdminDashboard() {
 
     const fetchData = async () => {
       try {
-        // Posts endpoint works fine
-        console.log("Fetching posts...");
-        const postsRes = await api.get("/posts");
-        console.log("Posts fetched successfully:", postsRes.data);
+        const [postsRes, usersRes] = await Promise.all([
+          api.get("/posts"),
+          api.get("/users"),
+        ]);
         setPosts(postsRes.data);
-
-        // Temporarily disable users fetch until backend is ready
-        setUsers([]); // Set empty array for now
-        setError("Users endpoint is being set up");
-
-        /* Uncomment this when backend is ready
-        console.log('Fetching users...');
-        const usersRes = await api.get("/users");
-        console.log('Users data structure:', usersRes.data);
         setUsers(usersRes.data);
-        */
-      } catch (error: any) {
-        console.error("Error details:", error);
-        setError(
-          `Failed to load data: ${error.response?.status} ${
-            error.response?.statusText || error.message
-          }`
-        );
+      } catch (error) {
+        setError("Failed to load data");
       } finally {
         setLoading(false);
       }
@@ -81,27 +66,44 @@ export default function AdminDashboard() {
       <section>
         <h2 className="text-2xl font-bold mb-6">Posts</h2>
         <div className="overflow-x-auto">
-          <table className="w-full border-collapse">
+          <table className="w-full">
             <thead>
-              <tr className="bg-gray-50">
-                <th className="text-left p-4">Title</th>
-                <th className="text-left p-4">Author</th>
-                <th className="text-left p-4">Date</th>
-                <th className="text-left p-4">Actions</th>
+              <tr>
+                <th className="text-left p-4 font-medium text-gray-600">
+                  Title
+                </th>
+                <th className="text-left p-4 font-medium text-gray-600">
+                  Author
+                </th>
+                <th className="text-left p-4 font-medium text-gray-600">
+                  Date
+                </th>
+                <th className="text-right p-4 font-medium text-gray-600">
+                  Actions
+                </th>
               </tr>
             </thead>
-            <tbody className="divide-y">
+            <tbody>
               {posts.map((post) => (
                 <tr key={post._id} className="hover:bg-gray-50">
-                  <td className="p-4">{post.title}</td>
-                  <td className="p-4">{post.author.username}</td>
                   <td className="p-4">
+                    <Link
+                      to={`/post/${post._id}`}
+                      className="group inline-flex items-center gap-1.5 font-medium text-gray-900 hover:text-blue-600"
+                    >
+                      {post.title}
+                      <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-colors" />
+                    </Link>
+                  </td>
+                  <td className="p-4 text-gray-600">{post.author.username}</td>
+                  <td className="p-4 text-gray-600">
                     {format(new Date(post.createdAt), "MMM d, yyyy")}
                   </td>
-                  <td className="p-4">
+                  <td className="p-4 text-right">
                     <button
                       onClick={() => handleDeletePost(post._id)}
-                      className="text-red-600 hover:text-red-700"
+                      className="text-gray-400 hover:text-red-600 transition-colors"
+                      title="Delete post"
                     >
                       <Trash2 className="w-5 h-5" />
                     </button>
@@ -116,22 +118,36 @@ export default function AdminDashboard() {
       <section>
         <h2 className="text-2xl font-bold mb-6">Users</h2>
         <div className="overflow-x-auto">
-          <table className="w-full border-collapse">
+          <table className="w-full">
             <thead>
-              <tr className="bg-gray-50">
-                <th className="text-left p-4">Username</th>
-                <th className="text-left p-4">Email</th>
-                <th className="text-left p-4">Role</th>
-                <th className="text-left p-4">Joined</th>
+              <tr>
+                <th className="text-left p-4 font-medium text-gray-600">
+                  Username
+                </th>
+                <th className="text-left p-4 font-medium text-gray-600">
+                  Email
+                </th>
+                <th className="text-left p-4 font-medium text-gray-600">
+                  Role
+                </th>
+                <th className="text-left p-4 font-medium text-gray-600">
+                  Joined
+                </th>
               </tr>
             </thead>
-            <tbody className="divide-y">
+            <tbody>
               {users.map((user) => (
                 <tr key={user._id} className="hover:bg-gray-50">
-                  <td className="p-4">{user.username}</td>
-                  <td className="p-4">{user.email}</td>
-                  <td className="p-4">{user.isAdmin ? "Admin" : "User"}</td>
+                  <td className="p-4 font-medium text-gray-900">
+                    {user.username}
+                  </td>
+                  <td className="p-4 text-gray-600">{user.email}</td>
                   <td className="p-4">
+                    <span className="text-sm font-medium">
+                      {user.isAdmin ? "Admin" : "User"}
+                    </span>
+                  </td>
+                  <td className="p-4 text-gray-600">
                     {format(new Date(user.createdAt), "MMM d, yyyy")}
                   </td>
                 </tr>

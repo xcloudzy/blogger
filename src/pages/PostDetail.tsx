@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { format } from 'date-fns';
-import { Pencil, Trash2 } from 'lucide-react';
-import api from '../lib/axios';
-import { Post } from '../types';
-import { useAuth } from '../context/AuthContext';
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { format } from "date-fns";
+import { Pencil, Trash2 } from "lucide-react";
+import api from "../lib/axios";
+import { Post } from "../types";
+import { useAuth } from "../context/AuthContext";
 
 export default function PostDetail() {
   const { id } = useParams<{ id: string }>();
@@ -12,7 +12,7 @@ export default function PostDetail() {
   const { user } = useAuth();
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -20,7 +20,7 @@ export default function PostDetail() {
         const { data } = await api.get(`/posts/${id}`);
         setPost(data);
       } catch (error) {
-        setError('Failed to load post');
+        setError("Failed to load post");
       } finally {
         setLoading(false);
       }
@@ -30,13 +30,13 @@ export default function PostDetail() {
   }, [id]);
 
   const handleDelete = async () => {
-    if (!window.confirm('Are you sure you want to delete this post?')) return;
+    if (!window.confirm("Are you sure you want to delete this post?")) return;
 
     try {
       await api.delete(`/posts/${id}`);
-      navigate('/');
+      navigate("/");
     } catch (error) {
-      setError('Failed to delete post');
+      setError("Failed to delete post");
     }
   };
 
@@ -51,7 +51,7 @@ export default function PostDetail() {
   if (error || !post) {
     return (
       <div className="text-center text-red-500 py-8">
-        {error || 'Post not found'}
+        {error || "Post not found"}
       </div>
     );
   }
@@ -75,7 +75,7 @@ export default function PostDetail() {
           <div className="flex items-center gap-2">
             <span>By {post.author.username}</span>
             <span>•</span>
-            <time>{format(new Date(post.createdAt), 'MMMM d, yyyy')}</time>
+            <time>{format(new Date(post.createdAt), "MMMM d, yyyy")}</time>
           </div>
 
           {canModify && (
