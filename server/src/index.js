@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://blogger-backend-phi.vercel.app",
+    origin: "https://blogger-frontend-three.vercel.app",
     credentials: true,
   })
 );
