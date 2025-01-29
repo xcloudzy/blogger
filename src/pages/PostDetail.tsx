@@ -17,9 +17,7 @@ export default function PostDetail() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const { data } = await api.get(
-          `https://blogger-backend-phi.vercel.app/posts/${id}`
-        );
+        const { data } = await api.get(`/posts/${id}`);
         setPost(data);
       } catch (error) {
         setError("Failed to load post");

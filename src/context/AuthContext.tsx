@@ -27,9 +27,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const checkAuth = async () => {
     try {
-      const { data } = await api.get(
-        "https://blogger-backend-phi.vercel.app/auth/me"
-      );
+      const { data } = await api.get("/auth/me");
       setUser(data);
     } catch (error) {
       setUser(null);
@@ -39,15 +37,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const login = async (email: string, password: string) => {
-    const { data } = await api.post(
-      "https://blogger-backend-phi.vercel.app/auth/login",
-      { email, password }
-    );
+    const { data } = await api.post("/auth/login", { email, password });
     setUser(data.user);
   };
 
   const logout = async () => {
-    await api.post("https://blogger-backend-phi.vercel.app/auth/logout");
+    await api.post("/auth/logout");
     setUser(null);
   };
 

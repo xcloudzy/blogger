@@ -23,8 +23,8 @@ export default function AdminDashboard() {
     const fetchData = async () => {
       try {
         const [postsRes, usersRes] = await Promise.all([
-          api.get("https://blogger-backend-phi.vercel.app/posts"),
-          api.get("https://blogger-backend-phi.vercel.app/users"),
+          api.get("/posts"),
+          api.get("/users"),
         ]);
         setPosts(postsRes.data);
         setUsers(usersRes.data);
@@ -42,9 +42,7 @@ export default function AdminDashboard() {
     if (!window.confirm("Are you sure you want to delete this post?")) return;
 
     try {
-      await api.delete(
-        `https://blogger-backend-phi.vercel.app/posts/${postId}`
-      );
+      await api.delete(`/posts/${postId}`);
       setPosts(posts.filter((post) => post._id !== postId));
     } catch (error) {
       setError("Failed to delete post");
