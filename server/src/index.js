@@ -12,18 +12,18 @@ dotenv.config();
 
 export const app = express();
 
+// CORS configuration
+app.use(
+  cors({
+    origin: "https://blogger-frontend-three.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: ["https://blogger-frontend-three.vercel.app"],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
-    exposedHeaders: ["set-cookie"],
-  })
-);
 
 // Routes
 app.use("/api/auth", authRoutes);
