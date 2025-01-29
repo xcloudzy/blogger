@@ -17,9 +17,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://blogger-frontend-three.vercel.app",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: ["https://blogger-frontend-three.vercel.app"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+    exposedHeaders: ["set-cookie"],
   })
 );
 
