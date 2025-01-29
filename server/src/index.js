@@ -12,14 +12,31 @@ dotenv.config();
 
 export const app = express();
 
-// CORS configuration
+// Pre-flight requests
+app.options("*", cors());
+
+// CORS middleware with more detailed configuration
 app.use(
   cors({
-    origin: "https://blogger-frontend-three.vercel.app",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: true, // This will reflect the request origin
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: [
+      "Origin",
+      "X-Requested-With",
+      "Content-Type",
+      "Accept",
+      "Authorization",
+    ],
+    exposedHeaders: ["set-cookie"],
   })
 );
+
+// Add request logging middleware
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path}`);
+  next();
+});
 
 // Middleware
 app.use(express.json());
@@ -29,6 +46,11 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/users", userRoutes);
+
+// Test endpoint
+app.get("/api/test", (req, res) => {
+  res.json({ message: "API is working" });
+});
 
 // Connect to MongoDB
 mongoose
@@ -46,3 +68,14 @@ app.listen(PORT, () => {
 });
 
 axios.defaults.withCredentials = true;
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: "Something broke!", error: err.message });
+});
+
+// Catch-all route
+app.use("*", (req, res) => {
+  res.status(404).json({ message: `Route ${req.originalUrl} not found` });
+});
