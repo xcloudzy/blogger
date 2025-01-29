@@ -11,7 +11,9 @@ export default function Home() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const { data } = await api.get("/posts");
+        const { data } = await api.get(
+          "https://blogger-backend-phi.vercel.app/posts"
+        );
         setPosts(data);
       } catch (error) {
         console.error("Error fetching posts:", error);

@@ -1,6 +1,12 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import api from '../lib/axios';
-import { User } from '../types';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import api from "../lib/axios";
+import { User } from "../types";
 
 interface AuthContextType {
   user: User | null;
@@ -21,7 +27,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const checkAuth = async () => {
     try {
-      const { data } = await api.get('/auth/me');
+      const { data } = await api.get(
+        "https://blogger-backend-phi.vercel.app/auth/me"
+      );
       setUser(data);
     } catch (error) {
       setUser(null);
@@ -31,12 +39,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const login = async (email: string, password: string) => {
-    const { data } = await api.post('/auth/login', { email, password });
+    const { data } = await api.post(
+      "https://blogger-backend-phi.vercel.app/auth/login",
+      { email, password }
+    );
     setUser(data.user);
   };
 
   const logout = async () => {
-    await api.post('/auth/logout');
+    await api.post("https://blogger-backend-phi.vercel.app/auth/logout");
     setUser(null);
   };
 
@@ -50,7 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }
