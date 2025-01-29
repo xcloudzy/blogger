@@ -28,8 +28,8 @@ app.use("/api/users", userRoutes);
 
 // Connect to MongoDB
 mongoose
-  .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/blog")
-  .then(() => console.log("Connected to MongoDB"))
+  .connect(process.env.MONGODB_URI)
+  .then(() => res.json({ message: "Hello from the server!" }))
   .catch((err) => console.error("MongoDB connection error:", err));
 
 const PORT = process.env.PORT || 5000;
