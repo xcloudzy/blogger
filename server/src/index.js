@@ -30,8 +30,12 @@ app.use("/api/users", userRoutes);
 // Connect to MongoDB
 mongoose
   .connect(process.env.MONGODB_URI)
-  .then(() => res.json({ message: "Hello from the server!" }))
+  .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
+
+app.get("/", (req, res) => {
+  res.json({ message: "This is a CORS-enabled response" });
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
