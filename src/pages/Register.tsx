@@ -5,9 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import api from "../lib/axios";
 
-axios.defaults.baseURL = "https://blogger-backend-phi.vercel.app";
-axios.defaults.withCredentials = true;
-
 const registerSchema = z
   .object({
     username: z.string().min(3, "Username must be at least 3 characters"),
