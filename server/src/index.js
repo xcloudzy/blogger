@@ -2,18 +2,17 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import serverless from "serverless-http"; // Import serverless-http
 import dotenv from "dotenv";
-dotenv.config();
-
 import authRoutes from "./routes/auth.js";
 import postRoutes from "./routes/posts.js";
 import userRoutes from "./routes/users.js";
 
-const app = express();
+dotenv.config();
 
-// Middleware
+export const app = express();
+
 app.use(cors());
+// Middleware
 app.use(express.json());
 app.use(cookieParser());
 
@@ -34,5 +33,7 @@ app.get("*", (req, res) => {
   });
 });
 
-// Export serverless handler
-export default serverless(app);
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
