@@ -67,6 +67,7 @@ export const login = async (req, res) => {
       username: user.username,
       email: user.email,
       isAdmin: user.isAdmin,
+      token,
     });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
