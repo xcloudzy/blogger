@@ -33,7 +33,7 @@ export default function Register() {
 
   const onSubmit = async (data: RegisterForm) => {
     try {
-      await api.post("/auth/register", {
+      await axios.post("/auth/register", {
         username: data.username,
         email: data.email,
         password: data.password,
