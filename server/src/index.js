@@ -6,10 +6,11 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/auth.js";
 import postRoutes from "./routes/posts.js";
 import userRoutes from "./routes/users.js";
+import { createServer } from "http";
 
 dotenv.config();
 
-export const app = express();
+const app = express();
 
 app.use(cors());
 // Middleware
@@ -33,7 +34,10 @@ app.get("*", (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Create an HTTP server to wrap the Express app
+const server = createServer(app);
+
+// Export the server as a serverless function
+export default (req, res) => {
+  server.emit("request", req, res);
+};
