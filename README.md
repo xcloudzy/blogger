@@ -25,6 +25,7 @@ Then run the server:
 Install the required packages:
 `npm install`
 
+Check env Variables.
 Start the Development Server:
 
 Launch the application:
