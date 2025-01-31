@@ -16,7 +16,7 @@ Install the required packages:
 Launch the application:
 `npm run dev`
 
-The application will typically be accessible at http://localhost:5173/.
+The application will typically be accessible at http://localhost:5000/.
 
 Then run the server: 
 
